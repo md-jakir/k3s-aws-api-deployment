@@ -1,0 +1,9 @@
+# Terraform directories and files
+.terraform/
+terraform.lock.hcl
+
+# Ignore any other sensitive or large files
+*.tfstate
+*.tfstate.backup
+*.tfvars
+crash.log
