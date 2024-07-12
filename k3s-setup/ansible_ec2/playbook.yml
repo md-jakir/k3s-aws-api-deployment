@@ -6,31 +6,33 @@
   vars:
     key_name: ec2_key          
     region: ap-southeast-1   
-    image: ami-0497a974f8d5dcef8
+    image: ami-0c2af51e265bd5e0e
     id: "k3s cluster"
     instance_type: t2.large 
-    vpc_id: subnet-0f1685858a5fc2303
+    vpc_id: vpc-091ff60b1a6650df7
+    subnet_id: subnet-0415157a893fe40ef
     sec_group: "k3s-security-group"
-    ec2_access_key: YOUR_ACCESS_KEY
-    ec2_secret_key: YOUR_SECRET_KEY
+    #ec2_access_key: 
+    #ec2_secret_key: 
 
   tasks:
     - name: Create security group
-      amazon.aws.ec2_security_group:
+      ansible.builtin.ec2_group:
         name: "{{ sec_group }}"
+        vpc_id: "{{ vpc_id }}"
         description: "Sec group for app"
         region: "{{ region }}"
         aws_access_key: "{{ ec2_access_key }}"
-        aws_secret_key: "{{ ec2_secret_key }}" 
+        aws_secret_key: "{{ ec2_secret_key }}"
         rules:                               
           - proto: tcp
-            from_port: 22
-            to_port: 22
+            ports:
+            - 22
             cidr_ip: 0.0.0.0/0
             rule_desc: allow all on ssh port
 
     - name: Create Key Pair   
-      amazon.aws.ec2_key:
+      ansible.builtin.ec2_key:
         name: "{{ key_name }}"
         region: "{{ region }}"
         aws_access_key: "{{ ec2_access_key }}"  
@@ -38,9 +40,9 @@
         key_material: "{{ lookup('file', '~/.ssh/aws_ec2_key.pub') }}"
 
     - name: Start server instance
-      amazon.aws.ec2:
+      ansible.builtin.ec2_instance:
         key_name: "{{ key_name }}"
-        vpc_subnet_id: "{{ vpc_id }}"
+        vpc_subnet_id: "{{ subnet_id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ sec_group }}"
         aws_access_key: "{{ ec2_access_key }}"
@@ -48,15 +50,15 @@
         region: "{{ region }}"
         network:
           assign_public_ip: true
-        image: "{{ image }}"
-        instance_tags:
-          Name: "server-instance"
+        image_id: "{{ image }}"
+        tags:
+          Name: "master_instance"
       register: server_instance
 
     - name: Start agent instances
-      amazon.aws.ec2:
+      ansible.builtin.ec2_instance:
         key_name: "{{ key_name }}"
-        vpc_subnet_id: "{{ vpc_id }}"
+        vpc_subnet_id: "{{ subnet_id }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ sec_group }}"
         aws_access_key: "{{ ec2_access_key }}"
@@ -64,10 +66,10 @@
         region: "{{ region }}"
         network:
           assign_public_ip: true
-        image: "{{ image }}"
+        image_id: "{{ image }}"
         count: 2
-        instance_tags:
-          Name: "agent-instance"
+        tags:
+          Name: "agent_node"
       register: agent_instances
 
     - name: Get instance facts
@@ -79,7 +81,7 @@
 
     - name: Display Server Instance ID
       debug:
-        msg: "Server Instance ID: {{ server_instance.instances[0].id }}"
+        msg: "Server Instance ID: {{ server_instance.instances.id }}"
 
     - name: Display Agent Instance IDs
       debug:
