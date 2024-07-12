@@ -2,8 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
     paths:
       - '../../api/**.py'
       - ../../api/Dockerfile
