@@ -19,6 +19,11 @@ jobs:
       with:
         python-version: '3.9'
 
+    - name: Run tests
+      run: |
+        cd api 
+        pytest
+
   build_and_push:
     needs: test
     runs-on: ubuntu-latest
