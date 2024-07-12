@@ -11,7 +11,7 @@ def test_hello_world(client):
     """Test the hello_world route"""
     rv = client.get('/')
     assert rv.status_code == 200
-    assert rv.data == b"Hello, World!"
+    assert rv.get_json() == {"message": "Hello, World!"}
 
 def test_echo(client):
     """Test the echo route"""
