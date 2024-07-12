@@ -6,10 +6,10 @@ on:
   pull_request:
     branches: [ "master" ]
 
-    paths:
-      - '../../api/**.py'
-      - ../../api/Dockerfile
-      - ../../k8s/deployment.yaml
+    # paths:
+    #   - '../../api/**.py'
+    #   - ../../api/Dockerfile
+    #   - ../../k8s/deployment.yaml
 
 jobs:
   test:
@@ -49,7 +49,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-api:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/flask-api:latest ../../api/
         docker push ${{ secrets.DOCKER_USERNAME }}/flask-api:latest
 
   # deploy:
