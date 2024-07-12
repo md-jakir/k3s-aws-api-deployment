@@ -3,14 +3,17 @@
   connection: local
   gather_facts: False
 
+  vars_files:
+  - ../../aws-infra/terraform_outputs.json
+
   vars:
     key_name: ec2_key          
-    region: ap-southeast-1   
+    region: ap-south-1   
     image: ami-0c2af51e265bd5e0e
     id: "k3s cluster"
-    instance_type: t2.large 
-    vpc_id: vpc-091ff60b1a6650df7
-    subnet_id: subnet-0415157a893fe40ef
+    instance_type: t2.medium
+    #vpc_id: vpc_id.value
+    #subnet_id: subnet-0415157a893fe40ef
     sec_group: "k3s-security-group"
     #ec2_access_key: 
     #ec2_secret_key: 
@@ -19,7 +22,7 @@
     - name: Create security group
       ansible.builtin.ec2_group:
         name: "{{ sec_group }}"
-        vpc_id: "{{ vpc_id }}"
+        vpc_id: "{{ vpc_id.value }}"
         description: "Sec group for app"
         region: "{{ region }}"
         aws_access_key: "{{ ec2_access_key }}"
@@ -42,7 +45,7 @@
     - name: Start server instance
       ansible.builtin.ec2_instance:
         key_name: "{{ key_name }}"
-        vpc_subnet_id: "{{ subnet_id }}"
+        vpc_subnet_id: "{{ private_subnet_id.value }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ sec_group }}"
         aws_access_key: "{{ ec2_access_key }}"
@@ -58,7 +61,7 @@
     - name: Start agent instances
       ansible.builtin.ec2_instance:
         key_name: "{{ key_name }}"
-        vpc_subnet_id: "{{ subnet_id }}"
+        vpc_subnet_id: "{{ private_subnet_id.value }}"
         instance_type: "{{ instance_type }}"
         security_group: "{{ sec_group }}"
         aws_access_key: "{{ ec2_access_key }}"
@@ -79,12 +82,12 @@
         region: "{{ region }}"
       register: result
 
-    - name: Display Server Instance ID
-      debug:
-        msg: "Server Instance ID: {{ server_instance.instances.id }}"
+    # - name: Display Server Instance ID
+    #   debug:
+    #     msg: "Server Instance ID: {{ server_instance.instances.id }}"
 
-    - name: Display Agent Instance IDs
-      debug:
-        msg: "Agent Instance ID: {{ item.id }}"
-      loop: "{{ agent_instances.instances }}"
-      tags: always
+    # - name: Display Agent Instance IDs
+    #   debug:
+    #     msg: "Agent Instance ID: {{ item.id }}"
+    #   loop: "{{ agent_instances.instances }}"
+    #   tags: always

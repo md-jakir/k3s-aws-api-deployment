@@ -1,0 +1,67 @@
+---
+- name: Fetch K3s token from master
+  hosts: master
+  become: true
+  tasks:
+    - name: Get K3s token from master
+      fetch:
+        src: /tmp/k3s_token
+        dest: /tmp/k3s_token
+        flat: true
+    - name: Get K3s CA certificate from master
+      fetch:
+        src: /var/lib/rancher/k3s/server/tls/server-ca.crt
+        dest: /tmp/server-ca.crt
+        flat: true
+
+    - name: Calculate CA certificate hash
+      shell: |
+        openssl x509 -in /var/lib/rancher/k3s/server/tls/server-ca.crt -noout -sha256 -fingerprint | cut -d"=" -f2 | tr -d ":"
+      register: ca_hash
+      
+    - name: Save CA hash to a file
+      copy:
+        content: "{{ ca_hash.stdout }}"
+        dest: /tmp/ca_hash
+
+    - name: Get K3s CA Hash certificate from master
+      fetch:
+        src: /tmp/ca_hash
+        dest: /tmp/ca_hash
+        flat: true
+
+- name: Install K3s agent on agent nodes
+  hosts: agents
+  become: true
+  vars:
+    master_ip: "{{ hostvars['master-node'].ansible_host }}"
+  tasks:
+    - name: Copy K3s token to agent nodes
+      copy:
+        src: /tmp/k3s_token
+        dest: /tmp/k3s_token
+
+    - name: Copy CA certificate to agent nodes
+      copy:
+        src: /tmp/server-ca.crt
+        dest: /tmp/server-ca.crt
+
+    - name: Copy CA hash to agent nodes
+      copy:
+        src: /tmp/ca_hash
+        dest: /tmp/ca_hash
+
+    - name: Read K3s token
+      slurp:
+        src: /tmp/k3s_token
+      register: k3s_token
+
+    - name: Read ca hash
+      slurp:
+        src: /tmp/ca_hash
+      register: ca_hash
+
+
+    - name: Install K3s agent
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ master_ip }}:6443 K3S_TOKEN={{ k3s_token.content | b64decode }} K3S_TOKEN_CA_HASH=sha256:{{ ca_hash.content | b64decode }} sh -
