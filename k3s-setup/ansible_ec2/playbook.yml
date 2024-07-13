@@ -12,11 +12,7 @@
     image: ami-0c2af51e265bd5e0e
     id: "k3s cluster"
     instance_type: t2.medium
-    #vpc_id: vpc_id.value
-    #subnet_id: subnet-0415157a893fe40ef
     sec_group: "k3s-security-group"
-    #ec2_access_key: 
-    #ec2_secret_key: 
 
   tasks:
     - name: Create security group
