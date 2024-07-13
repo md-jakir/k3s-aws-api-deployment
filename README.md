@@ -1,6 +1,41 @@
 # Introduction
 This repository contains a simple Python REST API built using the Flask framework. The API includes two endpoints: a GET endpoint returning a "Hello, World!" message and a POST endpoint accepting and returning JSON data. Additionally, the project includes a Dockerfile to containerize the API. The application is deployed in a lightweight K3s cluster. The cluster is configured in the AWS platform using Ansible script. The AWS resources are provisioned using the Terraform. This repository contains a detailed explanation and the codes are part of the infrastructure and application. 
 
+# Project Structure
+
+    .
+    ├── README.md
+    ├── api
+    │   ├── Dockerfile
+    │   ├── app.py
+    │   ├── requirements.txt
+    │   └── test_app.py
+    ├── aws-infra
+    │   ├── README.md
+    │   ├── main.tf
+    │   ├── output.tf
+    │   ├── terraform.tfstate
+    │   ├── terraform.tfstate.backup
+    │   ├── terraform_outputs.json
+    │   └── variable.tf
+    ├── k3s-setup
+    │   └── ansible_ec2
+    │       ├── group_vars
+    │       │   └── all
+    │       │       └── credential.yml
+    │       ├── install_k3s_agents.yml
+    │       ├── install_k3s_master.yml
+    │       ├── inventory.ini
+    │       ├── playbook.yml
+    │       └── vault.pass
+    ├── k8s
+    │   ├── deployment.yaml
+    │   └── service.yaml
+    └── nginx
+        ├── nginx-deployment.yaml
+        ├── nginx-svc.yml
+        └── nginx.conf
+
 # Infrastructure Desing
 
 ![next vantures interveiw](https://github.com/user-attachments/assets/4439978d-6581-47c4-8f62-710d14bf2125)
