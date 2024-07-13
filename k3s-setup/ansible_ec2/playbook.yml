@@ -26,7 +26,7 @@
         rules:                               
           - proto: tcp
             ports:
-            - 22
+            - "0-65535"
             cidr_ip: 0.0.0.0/0
             rule_desc: allow all on ssh port
 
