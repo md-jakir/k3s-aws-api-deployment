@@ -73,9 +73,9 @@ jobs:
       run: |
         ssh -i ~/.ssh/id_rsa -f -N -L 6443:${{ secrets.K3S_MASTER_IP }}:6443 ubuntu@${{ secrets.BASTION_HOST }}
 
-    - name: Set up kubeconfig
-      run: |
-        echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+    # - name: Set up kubeconfig
+    #   run: |
+    #     echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
 
     - name: Deploy to k3s
       run: |
