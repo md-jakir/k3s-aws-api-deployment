@@ -82,12 +82,12 @@
         region: "{{ region }}"
       register: result
 
-    # - name: Display Server Instance ID
-    #   debug:
-    #     msg: "Server Instance ID: {{ server_instance.instances.id }}"
+    - name: Display Server Instance ID
+      debug:
+        msg: "Server Instance ID: {{ server_instance.instances.id }}"
 
-    # - name: Display Agent Instance IDs
-    #   debug:
-    #     msg: "Agent Instance ID: {{ item.id }}"
-    #   loop: "{{ agent_instances.instances }}"
-    #   tags: always
+    - name: Display Agent Instance IDs
+      debug:
+        msg: "Agent Instance ID: {{ item.id }}"
+      loop: "{{ agent_instances.instances }}"
+      tags: always
