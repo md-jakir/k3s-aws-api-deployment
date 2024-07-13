@@ -9,6 +9,3 @@ The main.tf file contains the provider block and resource block. The provider bl
     2. $ terraform plan
     3. $ terraform validate
     4. $ terraform apply
-
-
-
