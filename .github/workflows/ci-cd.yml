@@ -57,17 +57,23 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Install kubectl
+      
+    - name: Set up SSH
       run: |
-        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        chmod +x kubectl
-        sudo mv kubectl /usr/local/bin/
+        mkdir -p ~/.ssh
+        echo "${{ secrets.BASTION_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "${{ secrets.BASTION_HOST }}" >> ~/.ssh/known_hosts
+        
+    - name: Create SSH tunnel to k3s master
+      run: |
+        ssh -i ~/.ssh/id_rsa -f -N -L 6443:${{ secrets.K3S_MASTER_IP }}:6443 ec2-user@${{ secrets.BASTION_HOST }}
 
     - name: Set up kubeconfig
       run: |
-        echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
 
     - name: Deploy to k3s
       run: |
-        kubectl set image deployment/flask-api-deployment flask-api=${{ secrets.DOCKER_USERNAME }}/flask-api:latest
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
