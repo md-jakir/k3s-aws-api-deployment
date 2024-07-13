@@ -2,9 +2,11 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "master" ]
+    branches-ignore: [ "master" ]
+    #branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches-ignore: [ "master" ]
+    #branches: [ "master" ]
 
 jobs:
   test:
@@ -69,14 +71,6 @@ jobs:
       run: |
         ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.BASTION_HOST }} "echo 'SSH connection successful'"
         
-    # - name: Create SSH tunnel to k3s master
-    #   run: |
-    #     ssh -i ~/.ssh/id_rsa -f -N -L 6443:${{ secrets.K3S_MASTER_IP }}:6443 ubuntu@${{ secrets.BASTION_HOST }}
-
-    # - name: Set up kubeconfig
-    #   run: |
-    #     echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
-
     - name: Deploy to k3s from bastion host
       run: |
         ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.BASTION_HOST }} << EOF
