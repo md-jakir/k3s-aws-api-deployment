@@ -22,4 +22,4 @@ To install k3s packages in the master node I write down the 'install_k3s_master.
       IdentityFile ~/.ssh/aws_ec2_key
       ForwardAgent yes
 
-To use the SSH agent need to install the SSH agent on the local machine. 
+To use the SSH agent need to install the SSH agent on the local machine. I generated a public key from the bastion host in the Ubuntu user home directory's .ssh folder and then I added the id_ras.pub key as an authorized key in all EC2 instances placed in the private subnet. 
