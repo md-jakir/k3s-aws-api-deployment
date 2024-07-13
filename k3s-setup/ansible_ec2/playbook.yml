@@ -8,7 +8,7 @@
 
   vars:
     key_name: ec2_key          
-    region: ap-south-1   
+    region: ap-southeast-1   
     image: ami-0c2af51e265bd5e0e
     id: "k3s cluster"
     instance_type: t2.medium
