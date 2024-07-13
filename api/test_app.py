@@ -15,6 +15,6 @@ def test_hello_world(client):
 
 def test_echo(client):
     """Test the echo route"""
-    rv = client.post('/echo', json={"message": "Hello, Echo!"})
+    rv = client.post('/name', json={"message": "Hello, Echo!"})
     assert rv.status_code == 200
     assert rv.get_json() == {"message": "Hello, Echo!"}
