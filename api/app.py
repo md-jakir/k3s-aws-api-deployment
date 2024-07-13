@@ -7,7 +7,7 @@ def hello_world():
     return jsonify(message="Hello, World!")
 
 @app.route('/name', methods=['POST'])
-def echo():
+def name():
     data = request.get_json()
     return jsonify(data)
 
