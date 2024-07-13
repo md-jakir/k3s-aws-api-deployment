@@ -19,4 +19,5 @@ A NAT (Network Address Translation) Gateway allows instances in a private subnet
 K3s cluster was set up with one master node and two agent nodes. When infrastructure was built with Terraform IaC. In Terraform IaC there is a output.tf file which will provide the VPC ID, private subnet ID, and public subnet ID. I also redirected a JSON output of output.tf file to a separate file so that I can map the variable to the Ansible code. The Ansible playbook provisions EC2 instances installing K3s packages and adds the agent instances with the master node. 
 # Python Flask App
 It is just a simple Python REST API code made with the Flask framework which has two endpoints one is for the GET method to return a simple "Hello, World!" message. Another one is for the POST method which accepts a JSON payload and returns the same payload in the response.
-# 
+# GitHub Action 
+GitHub Action is used for deploying the application to the cluster over the CI/CD process when any changes are made in the source code. 
