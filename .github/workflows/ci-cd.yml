@@ -77,7 +77,12 @@ jobs:
     #   run: |
     #     echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
 
-    - name: Deploy to k3s
+    - name: Deploy to k3s from bastion host
       run: |
-        kubectl apply -f k8s/deployment.yaml
-        kubectl apply -f k8s/service.yaml
+        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.BASTION_HOST }} << EOF
+          cd /home/ubuntu
+          git clone https://github.com/md-jakir/k3s-aws-api-deployment.git
+          cd k3s-aws-api-deployment/k8s
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+        EOF
