@@ -2,7 +2,7 @@ provider "aws" {
   region = var.region
 }
 
-resource "aws_vpc" "main" {
+resource "aws_vpc" "next_vanture_vpc" {
   cidr_block = var.vpc_cidr
 
   tags = merge(
@@ -13,7 +13,7 @@ resource "aws_vpc" "main" {
   )
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "subnet_pub" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_cidr
   map_public_ip_on_launch = true
@@ -22,12 +22,12 @@ resource "aws_subnet" "public" {
   tags = merge(
     var.tags,
     {
-      Name = "public-subnet"
+      Name = "public_subnet"
     }
   )
 }
 
-resource "aws_subnet" "private" {
+resource "aws_subnet" "sub_private" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_cidr
   availability_zone = var.availability_zone
@@ -35,29 +35,29 @@ resource "aws_subnet" "private" {
   tags = merge(
     var.tags,
     {
-      Name = "private-subnet"
+      Name = "private_subnet"
     }
   )
 }
 
-resource "aws_internet_gateway" "gw" {
+resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(
     var.tags,
     {
-      Name = "internet-gateway"
+      Name = "dev_internet_gateway"
     }
   )
 }
 
-resource "aws_route_table" "public" {
+resource "aws_route_table" "public_rtb" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(
     var.tags,
     {
-      Name = "public-route-table"
+      Name = "public_route_table"
     }
   )
 }
@@ -73,25 +73,25 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_eip" "nat" {
+resource "aws_eip" "nateip" {
   vpc = true
 
   tags = merge(
     var.tags,
     {
-      Name = "nat-eip"
+      Name = "nat_eip"
     }
   )
 }
 
-resource "aws_nat_gateway" "nat" {
+resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public.id
 
   tags = merge(
     var.tags,
     {
-      Name = "nat-gateway"
+      Name = "dev_nat_gateway"
     }
   )
 }
