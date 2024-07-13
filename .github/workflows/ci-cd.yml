@@ -64,6 +64,10 @@ jobs:
         echo "${{ secrets.BASTION_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H "${{ secrets.BASTION_HOST }}" >> ~/.ssh/known_hosts
+
+    - name: Test SSH connection to bastion host
+      run: |
+        ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.BASTION_HOST }} "echo 'SSH connection successful'"
         
     - name: Create SSH tunnel to k3s master
       run: |
