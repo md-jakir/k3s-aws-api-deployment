@@ -28,3 +28,5 @@ To install the K3s package in the master node I run the 'install_k3s_master.yml'
 
       $ ansible-playbook -i inventory.ini install_k3s_master.yml
       $ ansible-playbook -i inventory.ini install_k3s_agents.yml
+
+To add agent nodes to the master node I needed to add the agent node's public key as an authorized key in the master node so that the agent can SSH into master without any interruption. Without a CA hash for the CA certificate in the master node, the agent node isn't added to the cluster. 
