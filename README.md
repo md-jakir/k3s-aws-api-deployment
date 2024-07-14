@@ -2,11 +2,11 @@
 This repository contains a simple Python REST API built using the Flask framework. The API includes two endpoints: a GET endpoint returning a "Hello, World!" message and a POST endpoint accepting and returning JSON data. Additionally, the project includes a Dockerfile to containerize the API. The application is deployed in a lightweight K3s cluster. The cluster is configured in the AWS platform using Ansible script. The AWS resources are provisioned using the Terraform. This repository contains a detailed explanation and the codes are part of the infrastructure and application. 
 
 # Project Structure
-
     .
     ├── README.md
     ├── api
     │   ├── Dockerfile
+    │   ├── README.md
     │   ├── app.py
     │   ├── requirements.txt
     │   └── test_app.py
@@ -18,8 +18,15 @@ This repository contains a simple Python REST API built using the Flask framewor
     │   ├── terraform.tfstate.backup
     │   ├── terraform_outputs.json
     │   └── variable.tf
+    ├── iac
+    │   ├── ec2.tf
+    │   ├── output.tf
+    │   ├── sg-grp.tf
+    │   ├── variable.tf
+    │   └── vpc.tf
     ├── k3s-setup
     │   └── ansible_ec2
+    │       ├── README.md
     │       ├── group_vars
     │       │   └── all
     │       │       └── credential.yml
@@ -29,11 +36,13 @@ This repository contains a simple Python REST API built using the Flask framewor
     │       ├── playbook.yml
     │       └── vault.pass
     ├── k8s
+    │   ├── README.md
     │   ├── deployment.yaml
     │   └── service.yaml
     └── nginx
         ├── nginx-deployment.yaml
-        ├── nginx-svc.yml
+        ├── nginx-svc-lb.yml
+        ├── nginx-svc-np.yml
         └── nginx.conf
 
 # Infrastructure Desing
