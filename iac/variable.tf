@@ -22,16 +22,6 @@ variable "private_subnet_cidr_blocks" {
   default     = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
 }
 
-variable "k3s_version" {
-  description = "Version of k3s to install."
-  default     = "latest"  # or specify a specific version like "v1.23.2+k3s1"
-}
-
-variable "k3s_token" {
-  description = "Token for agent nodes to join the master."
-  default     = "your_token"
-}
-
 variable "bastion_ami" {
   description = "AMI ID for bastion host."
   default     = "ami-0c2af51e265bd5e0e"  # Replace with appropriate AMI ID
@@ -40,4 +30,23 @@ variable "bastion_ami" {
 variable "nginx_lb_ami" {
   description = "AMI ID for nginx load balancer."
   default     = "ami-0c2af51e265bd5e0e"  # Replace with appropriate AMI ID
+}
+
+variable "key_name" {
+  description = "Name of the EC2 key pair."
+  default     = "ec2_key"
+}
+
+variable "public_key_path" {
+  description = "Path to the public key file."
+  default     = "~/.ssh/aws_ec2_key"
+}
+
+variable "tags" {
+  description = "Tags to apply to all resources."
+  type        = map(string)
+  default     = {
+    Project     = "K3sCluster"
+    Environment = "Development"
+  }
 }
