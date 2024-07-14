@@ -47,8 +47,7 @@ This repository contains a simple Python REST API built using the Flask framewor
 
 # Infrastructure Desing
 
-![next vantures interveiw](https://github.com/user-attachments/assets/4439978d-6581-47c4-8f62-710d14bf2125)
-
+![next vantures interveiw (1)](https://github.com/user-attachments/assets/6870a61c-3a67-4c5a-8f3a-b41235260ac7)
 # Provisioned AWS resources using Terraform
 The repository has a directory named 'aws-infra', which contains all Terraform code. This IaC code provisions the following AWS resources. 
 # VPC
