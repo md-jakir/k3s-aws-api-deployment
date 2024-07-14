@@ -1,6 +1,6 @@
 variable "region" {
   description = "The AWS region to deploy resources in"
-  default     = "ap-south-1"
+  default     = "ap-southeast-1"
 }
 
 variable "vpc_cidr" {
@@ -20,7 +20,7 @@ variable "private_subnet_cidr" {
 
 variable "availability_zone" {
   description = "The availability zone to deploy resources in"
-  default     = "ap-south-1a"
+  default     = "ap-southeast-1a"
 }
 
 variable "http_port" {
