@@ -2,11 +2,11 @@
 This repository contains a simple Python REST API built using the Flask framework. The API includes two endpoints: a GET endpoint returning a "Hello, World!" message and a POST endpoint accepting and returning JSON data. Additionally, the project includes a Dockerfile to containerize the API. The application is deployed in a lightweight K3s cluster. The cluster is configured in the AWS platform using Ansible script. The AWS resources are provisioned using the Terraform. This repository contains a detailed explanation and the codes are part of the infrastructure and application. 
 
 # Project Structure
-
     .
     ├── README.md
     ├── api
     │   ├── Dockerfile
+    │   ├── README.md
     │   ├── app.py
     │   ├── requirements.txt
     │   └── test_app.py
@@ -18,8 +18,15 @@ This repository contains a simple Python REST API built using the Flask framewor
     │   ├── terraform.tfstate.backup
     │   ├── terraform_outputs.json
     │   └── variable.tf
+    ├── iac
+    │   ├── ec2.tf
+    │   ├── output.tf
+    │   ├── sg-grp.tf
+    │   ├── variable.tf
+    │   └── vpc.tf
     ├── k3s-setup
     │   └── ansible_ec2
+    │       ├── README.md
     │       ├── group_vars
     │       │   └── all
     │       │       └── credential.yml
@@ -29,17 +36,18 @@ This repository contains a simple Python REST API built using the Flask framewor
     │       ├── playbook.yml
     │       └── vault.pass
     ├── k8s
+    │   ├── README.md
     │   ├── deployment.yaml
     │   └── service.yaml
     └── nginx
         ├── nginx-deployment.yaml
-        ├── nginx-svc.yml
+        ├── nginx-svc-lb.yml
+        ├── nginx-svc-np.yml
         └── nginx.conf
 
 # Infrastructure Desing
 
-![next vantures interveiw](https://github.com/user-attachments/assets/4439978d-6581-47c4-8f62-710d14bf2125)
-
+![next vantures interveiw (1)](https://github.com/user-attachments/assets/6870a61c-3a67-4c5a-8f3a-b41235260ac7)
 # Provisioned AWS resources using Terraform
 The repository has a directory named 'aws-infra', which contains all Terraform code. This IaC code provisions the following AWS resources. 
 # VPC
