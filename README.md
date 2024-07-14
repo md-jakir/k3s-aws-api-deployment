@@ -64,3 +64,6 @@ K3s cluster was set up with one master node and two agent nodes. When infrastruc
 It is just a simple Python REST API code made with the Flask framework which has two endpoints one is for the GET method to return a simple "Hello, World!" message. Another one is for the POST method which accepts a JSON payload and returns the same payload in the response.
 # GitHub Action 
 GitHub Action is used for deploying the application to the cluster over the CI/CD process when any changes are made in the source code. 
+# CI/CD pipeline output
+
+![image](https://github.com/user-attachments/assets/35dcbfc4-207a-4d5e-8e69-78502d068a88)
