@@ -8,7 +8,7 @@ Generate a key for EC2 login using the following command. This private key will 
 As the EC2 instances are created in a private subnet so from outside can't SSH login into these machines. Here I used ansible vault to secure the AWS credential. I generated a file called credential.yml file under group_vars/all directory. 
 
       $ openssl rand -base64 2048 > vault.pass
-      $ nsible-vault create group_vars/all/credential.yml --vault-password-file vault.pass
+      $ ansible-vault create group_vars/all/credential.yml --vault-password-file vault.pass
 
 Here, vault.pass file is used to encrypt the credential.yml file and this vault.pass file is passed when executing the ansible-playbook command looks like this.
 
